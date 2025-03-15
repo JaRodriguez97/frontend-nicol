@@ -1,0 +1,43 @@
+<section class="testimonios container">
+  <header class="testimonios__header">
+    <h2 class="testimonios__titulo">Testimonios de clientes</h2>
+    <p class="testimonios__descripcion">
+      La calidad de un servicio excepcional.
+    </p>
+  </header>
+  <div class="testimonios__grid">
+    <article class="testimonio" *ngFor="let item of testimonios">
+      <header class="testimonio__header">
+        <ul
+          class="testimonio__calificacion"
+          aria-label="Calificación de 5 estrellas"
+        >
+          <li
+            class="testimonio__estrella"
+            *ngFor="let item of [].constructor(5)"
+          >
+            <fa-icon [icon]="faStar" aria-label="Estrella"></fa-icon>
+          </li>
+        </ul>
+      </header>
+      <blockquote class="testimonio__texto">
+        {{ item.texto }}
+      </blockquote>
+      <figure class="testimonio__autor">
+        <img
+          class="testimonio__imagen"
+          [src]="item.img"
+          [alt]="item.alt"
+          [title]="item.title"
+          width="40"
+          height="40"
+          loading="lazy"
+        />
+        <figcaption>
+          <p class="testimonio__nombre">{{ item.nombre }}</p>
+          <p class="testimonio__servicio">{{ item.servicio }}</p>
+        </figcaption>
+      </figure>
+    </article>
+  </div>
+</section>

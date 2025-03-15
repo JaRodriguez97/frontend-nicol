@@ -1,1 +1,232 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --primary-color: #cfb0be;
+  --primary-color-opacity: #cfb0be80;
+  --color-titulo: #3c3337;
+  --color-texto: #242424;
+}
+
+/* Box sizing y márgenes/paddings en 0 */
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
+  border-style: solid;
+  border-color: currentColor;
+  font-family: sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* Tipografía por defecto */
+body {
+  -webkit-font-smoothing: antialiased;
+  scroll-padding-top: 2em;
+  line-height: 1.5;
+  font-family: inherit;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+  background-color: #ffffff;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 2000 1500'%3E%3Cdefs%3E%3Crect stroke='%23ffffff' stroke-width='0.7' width='1' height='1' id='s'/%3E%3Cpattern id='a' width='3' height='3' patternUnits='userSpaceOnUse' patternTransform='rotate(107 1000 750) scale(20.4) translate(-950.98 -713.24)'%3E%3Cuse fill='%23fcfcfc' href='%23s' y='2'/%3E%3Cuse fill='%23fcfcfc' href='%23s' x='1' y='2'/%3E%3Cuse fill='%23fafafa' href='%23s' x='2' y='2'/%3E%3Cuse fill='%23fafafa' href='%23s'/%3E%3Cuse fill='%23f7f7f7' href='%23s' x='2'/%3E%3Cuse fill='%23f7f7f7' href='%23s' x='1' y='1'/%3E%3C/pattern%3E%3Cpattern id='b' width='7' height='11' patternUnits='userSpaceOnUse' patternTransform='rotate(107 1000 750) scale(20.4) translate(-950.98 -713.24)'%3E%3Cg fill='%23f5f5f5'%3E%3Cuse href='%23s'/%3E%3Cuse href='%23s' y='5' /%3E%3Cuse href='%23s' x='1' y='10'/%3E%3Cuse href='%23s' x='2' y='1'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='8'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='5' y='2'/%3E%3Cuse href='%23s' x='5' y='6'/%3E%3Cuse href='%23s' x='6' y='9'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='h' width='5' height='13' patternUnits='userSpaceOnUse' patternTransform='rotate(107 1000 750) scale(20.4) translate(-950.98 -713.24)'%3E%3Cg fill='%23f5f5f5'%3E%3Cuse href='%23s' y='5'/%3E%3Cuse href='%23s' y='8'/%3E%3Cuse href='%23s' x='1' y='1'/%3E%3Cuse href='%23s' x='1' y='9'/%3E%3Cuse href='%23s' x='1' y='12'/%3E%3Cuse href='%23s' x='2'/%3E%3Cuse href='%23s' x='2' y='4'/%3E%3Cuse href='%23s' x='3' y='2'/%3E%3Cuse href='%23s' x='3' y='6'/%3E%3Cuse href='%23s' x='3' y='11'/%3E%3Cuse href='%23s' x='4' y='3'/%3E%3Cuse href='%23s' x='4' y='7'/%3E%3Cuse href='%23s' x='4' y='10'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='c' width='17' height='13' patternUnits='userSpaceOnUse' patternTransform='rotate(107 1000 750) scale(20.4) translate(-950.98 -713.24)'%3E%3Cg fill='%23f2f2f2'%3E%3Cuse href='%23s' y='11'/%3E%3Cuse href='%23s' x='2' y='9'/%3E%3Cuse href='%23s' x='5' y='12'/%3E%3Cuse href='%23s' x='9' y='4'/%3E%3Cuse href='%23s' x='12' y='1'/%3E%3Cuse href='%23s' x='16' y='6'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='d' width='19' height='17' patternUnits='userSpaceOnUse' patternTransform='rotate(107 1000 750) scale(20.4) translate(-950.98 -713.24)'%3E%3Cg fill='%23ffffff'%3E%3Cuse href='%23s' y='9'/%3E%3Cuse href='%23s' x='16' y='5'/%3E%3Cuse href='%23s' x='14' y='2'/%3E%3Cuse href='%23s' x='11' y='11'/%3E%3Cuse href='%23s' x='6' y='14'/%3E%3C/g%3E%3Cg fill='%23efefef'%3E%3Cuse href='%23s' x='3' y='13'/%3E%3Cuse href='%23s' x='9' y='7'/%3E%3Cuse href='%23s' x='13' y='10'/%3E%3Cuse href='%23s' x='15' y='4'/%3E%3Cuse href='%23s' x='18' y='1'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='e' width='47' height='53' patternUnits='userSpaceOnUse' patternTransform='rotate(107 1000 750) scale(20.4) translate(-950.98 -713.24)'%3E%3Cg fill='%23CFB0BE'%3E%3Cuse href='%23s' x='2' y='5'/%3E%3Cuse href='%23s' x='16' y='38'/%3E%3Cuse href='%23s' x='46' y='42'/%3E%3Cuse href='%23s' x='29' y='20'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='f' width='59' height='71' patternUnits='userSpaceOnUse' patternTransform='rotate(107 1000 750) scale(20.4) translate(-950.98 -713.24)'%3E%3Cg fill='%23CFB0BE'%3E%3Cuse href='%23s' x='33' y='13'/%3E%3Cuse href='%23s' x='27' y='54'/%3E%3Cuse href='%23s' x='55' y='55'/%3E%3C/g%3E%3C/pattern%3E%3Cpattern id='g' width='139' height='97' patternUnits='userSpaceOnUse' patternTransform='rotate(107 1000 750) scale(20.4) translate(-950.98 -713.24)'%3E%3Cg fill='%23CFB0BE'%3E%3Cuse href='%23s' x='11' y='8'/%3E%3Cuse href='%23s' x='51' y='13'/%3E%3Cuse href='%23s' x='17' y='73'/%3E%3Cuse href='%23s' x='99' y='57'/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect fill='url(%23a)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23b)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23h)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23c)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23d)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23e)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23f)' width='100%25' height='100%25'/%3E%3Crect fill='url(%23g)' width='100%25' height='100%25'/%3E%3C/svg%3E");
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+/* Encabezados sin estilos predeterminados */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+/* Listas sin estilos */
+ol,
+ul {
+  list-style: none;
+}
+
+/* Imágenes como elementos de bloque y alineadas */
+img,
+svg,
+video,
+canvas,
+audio,
+iframe,
+embed,
+object {
+  display: block;
+}
+
+/* Botones sin estilos por defecto */
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+/* Quitar la apariencia nativa de botones y selects en algunos navegadores */
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+  appearance: button;
+  background-color: transparent;
+  background-image: none;
+}
+
+/* Quitar estilos del foco en algunos navegadores */
+[role="button"],
+button {
+  cursor: pointer;
+}
+
+/* Normalización de enlaces */
+a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+p {
+  color: inherit;
+  text-wrap: pretty;
+}
+
+/* Quitar estilos predeterminados de tablas */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* Normalizar textarea */
+textarea {
+  resize: vertical;
+}
+
+/* Ocultar elementos con hidden */
+[hidden] {
+  display: none;
+}
+
+/* ===== Contenedor Principal ===== */
+.container {
+  width: 100%;
+  max-width: 1312px;
+  margin: 0 auto;
+}
+
+@media (max-width: 750px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+section.container {
+  padding: 56px 64px;
+  display: flex;
+  gap: 80px;
+  height: 864px;
+}
+
+@media (max-width: 770px) {
+  section.container {
+    padding: 64px 20px;
+    height: fit-content;
+    flex-direction: column;
+  }
+}
+
+.text-content {
+  width: 100%;
+  max-width: fit-content;
+  height: 100%;
+  justify-content: space-evenly;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  min-height: fit-content;
+}
+
+@media (min-width: 770px) {
+  .text-content {
+    width: 50%;
+    max-width: 600px;
+    text-align: left;
+  }
+}
+
+.text-content h1 {
+  font-weight: bold;
+  font-size: 48px;
+  line-height: 60px;
+}
+
+@media (max-width: 770px) {
+  .text-content h1 {
+    font-size: 32px;
+    line-height: 40px;
+  }
+}
+
+.text-content p {
+  color: #4b5563;
+}
+
+.text-content h1,
+.text-content p {
+  width: 100%;
+}
+
+@media (min-width: 1100px) {
+  .text-content h1 {
+    max-width: 19ch;
+  }
+
+  .text-content p {
+    max-width: 57ch;
+  }
+}
+
+.btn {
+  padding: 12px 24px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: opacity 0.3s ease;
+  border: 2px solid var(--primary-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.primary {
+  background-color: var(--primary-color);
+  color: black;
+}
+
+.primary:hover {
+  opacity: 0.8;
+}
+
+.secondary {
+  color: black;
+  background: none;
+}
+
+.secondary:hover {
+  background-color: #f3f4f6;
+}

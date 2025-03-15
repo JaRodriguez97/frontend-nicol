@@ -1,0 +1,44 @@
+.container#consulta {
+  min-height: fit-content;
+  height: fit-content;
+}
+
+.consulta {
+  border: 1px solid var(--primary-color-opacity);
+  padding: 48px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  align-items: center;
+  gap: 20px;
+}
+
+@media (max-width: 770px) {
+  .consulta {
+    justify-content: center;
+    gap: 20px;
+    text-align: center;
+    flex-direction: column;
+  }
+}
+
+.consulta__titulo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.consulta__descripcion {
+  color: #4b5563;
+  margin-top: 24px;
+}
+
+.consulta__navegacion {
+  display: flex;
+  gap: 1rem;
+}
+
+.consulta__boton {
+  padding: 0.5rem 1rem;
+}

@@ -1,0 +1,34 @@
+<button class="menu-btn mobile" id="menu-btn" (click)="toggleMenu()">
+  <fa-icon [icon]="faBars"></fa-icon>
+</button>
+
+<a
+  href="#main"
+  class="scroll-to-top"
+  [class.active]="isScrollActive"
+  (click)="scrollToTop()"
+>
+  <fa-icon [icon]="faArrowUp"></fa-icon>
+</a>
+<!-- Header -->
+<header class="header" [class.open]="isMenuOpen">
+  <div class="container header-container">
+    <nav class="nav" style="justify-content: left">
+      <a href="#coquette" (click)="toggleMenu()">Coquette</a>
+      <a href="#servicios" (click)="toggleMenu()">Servicios</a>
+      <a href="#consulta" (click)="toggleMenu()">Contáctanos</a>
+    </nav>
+    <a href="#" class="logo" style="justify-content: center; width: 80px">
+      <img
+        src="../../../assets/img/logoNicolNails.jpg"
+        width="50"
+        height="50"
+        alt="Logo"
+        loading="lazy"
+      />
+    </a>
+    <div class="menu-btn-container" style="justify-content: right">
+      <button class="menu-btn">Agendar</button>
+    </div>
+  </div>
+</header>

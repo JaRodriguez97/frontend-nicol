@@ -1,0 +1,19 @@
+<section class="container column" id="servicios">
+  <h2 class="titulo">
+    Atención exclusiva para resaltar la belleza y salud de tus manos y pies
+  </h2>
+  <div class="grid">
+    <article class="card" *ngFor="let item of cardArray">
+      <app-svg-flower></app-svg-flower>
+      <h3 class="subtitulo">{{ item.titulo }}</h3>
+      <small class="small">{{ item.smallText }}</small>
+      <p class="descripcion">
+        {{ item.descripcion }}
+      </p>
+      <a href="#" class="enlace">
+        {{ item.textLink }}
+        <fa-icon [icon]="faChevronRight"></fa-icon>
+      </a>
+    </article>
+  </div>
+</section>

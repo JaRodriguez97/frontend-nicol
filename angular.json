@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/nicol-nails",
+            "outputPath": "dist/nicol-nails/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": [
@@ -91,6 +91,59 @@
             ],
             "scripts": []
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/nicol-nails/server",
+            "main": "server.ts",
+            "tsConfig": "tsconfig.server.json"
+          },
+          "configurations": {
+            "production": {
+              "outputHashing": "media"
+            },
+            "development": {
+              "optimization": false,
+              "sourceMap": true,
+              "extractLicenses": false,
+              "vendorChunk": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve-ssr": {
+          "builder": "@nguniversal/builders:ssr-dev-server",
+          "configurations": {
+            "development": {
+              "browserTarget": "nicol-nails:build:development",
+              "serverTarget": "nicol-nails:server:development"
+            },
+            "production": {
+              "browserTarget": "nicol-nails:build:production",
+              "serverTarget": "nicol-nails:server:production"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "prerender": {
+          "builder": "@nguniversal/builders:prerender",
+          "options": {
+            "routes": [
+              "/"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "nicol-nails:build:production",
+              "serverTarget": "nicol-nails:server:production"
+            },
+            "development": {
+              "browserTarget": "nicol-nails:build:development",
+              "serverTarget": "nicol-nails:server:development"
+            }
+          },
+          "defaultConfiguration": "production"
         }
       }
     }

@@ -1,0 +1,38 @@
+<main class="container main-content" id="main">
+  <div class="text-content">
+    <h1>Manicure & Pedicure Nicol Rodriguez Nails, Glamour y Cuidado</h1>
+    <p>
+      Manicure y pedicure en el norte de Cali, nuestra especialidad es crear
+      diseños de uñas únicas con técnicas profesionales y atención
+      personalizada. Descubre cómo un estilo minimalista, glamoroso o cualquiera
+      que desees, puede transformar tus manos y resaltar tu belleza con cada
+      detalle.
+    </p>
+    <div class="buttons">
+      <a class="btn primary" href="#consulta">Más Info</a>
+      <a
+        class="btn secondary"
+        href="https://wa.me/573003762773"
+        target="_blank"
+      >
+        Contáctame
+        <fa-icon [icon]="faWhatsapp" style="font-size: 25px"></fa-icon>
+      </a>
+    </div>
+  </div>
+  <div class="image-grid">
+    <div
+      *ngFor="let ag of allGrids; let i = index"
+      class="first-grid"
+      [ngClass]="{ 'first-grid': i === 0, 'second-grid': i === 1 }"
+    >
+      <img
+        *ngFor="let item of ag"
+        [src]="'../../../assets/img/img' + item + '.jpg'"
+        alt="Manicure & Pedicure Nicol Rodriguez Nails"
+        title="Manicure & Pedicure Nicol Rodriguez Nails"
+        loading="lazy"
+      />
+    </div>
+  </div>
+</main>
