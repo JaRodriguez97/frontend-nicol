@@ -27,8 +27,8 @@
       [ngClass]="{ 'first-grid': i === 0, 'second-grid': i === 1 }"
     >
       <img
-        *ngFor="let item of ag"
-        [src]="'../../../assets/img/img' + item + '.jpg'"
+        *ngFor="let item of ag; let idx = index"
+        [src]="'../../../assets/img/img' + item + '.webp'"
         alt="Manicure & Pedicure Nicol Rodriguez Nails"
         title="Manicure & Pedicure Nicol Rodriguez Nails"
         loading="lazy"
