@@ -26,13 +26,16 @@
       class="first-grid"
       [ngClass]="{ 'first-grid': i === 0, 'second-grid': i === 1 }"
     >
+    <ng-container *ngFor="let item of ag; let idx = index">
       <img
-        *ngFor="let item of ag; let idx = index"
+        *ngIf="shouldLoadImage(idx)"
         [src]="'../../../assets/img/img' + item + '.webp'"
         alt="Manicure & Pedicure Nicol Rodriguez Nails"
         title="Manicure & Pedicure Nicol Rodriguez Nails"
         loading="lazy"
+        (load)="onImageLoad(idx)"
       />
+    </ng-container>
     </div>
   </div>
 </main>
