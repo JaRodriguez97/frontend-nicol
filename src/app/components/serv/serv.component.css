@@ -1,6 +1,7 @@
 section.container.column {
   align-items: center;
   height: fit-content;
+  min-height: fit-content;
 }
 
 .titulo {
@@ -27,8 +28,9 @@ section.container.column {
 
 @media (max-width: 768px) {
   .grid {
-    min-height: fit-content;
+    height: fit-content;
     flex-direction: column;
+    min-height: 90vh;
   }
 }
 
