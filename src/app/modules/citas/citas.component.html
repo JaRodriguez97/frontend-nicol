@@ -1,0 +1,99 @@
+<section class="schedule__container">
+  <main class="schedule__main">
+    <header class="schedule__header">
+      <button aria-label="Go back" class="schedule__header-button">
+        <fa-icon [icon]="faArrowLeft"></fa-icon>
+      </button>
+      <h2 class="schedule__header-title">
+        Agenda de <span>Citas de uñas</span>
+      </h2>
+    </header>
+
+    <fieldset class="form__group">
+      <select
+        name="mes"
+        id="mes"
+        class="schedule__select"
+        [(ngModel)]="month"
+        (change)="cambiarMes(month)"
+      >
+        <option *ngFor="let m of nombresMeses; let i = index" [value]="i">
+          {{ m }}
+        </option>
+      </select>
+
+      <button (click)="cambiarModoCalendario()">Modo Calendario</button>
+    </fieldset>
+
+    <nav class="schedule__nav">
+      <ul
+        [ngClass]="{
+          mobile: publicService.isMobile,
+          'schedule__nav-list': true,
+          flexWrap: flexWrap
+        }"
+        *ngIf="fechasPorMes.length"
+      >
+        <li
+          *ngFor="let fM of fechasPorMes; let i = index"
+          [ngClass]="{
+            'schedule__nav-item--active': selectedDay(i + 1),
+            'schedule__nav-item': true,
+            mobile: publicService.isMobile,
+          }"
+          (click)="getSelectDay(i + 1 < 10 ? '0' + (i + 1) : i + 1)"
+        >
+          <p class="schedule__nav-day">
+            {{ fM.split(" ")[0] }}
+          </p>
+          <p class="schedule__nav-date">
+            {{ formatNumber(numberF(fM.split(" ")[1])) }}
+          </p>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="schedule__divider"></div>
+
+    <section class="schedule__appointments">
+      <article
+        class="schedule__appointment"
+        *ngFor="let c of listCitasSelected"
+      >
+        <time class="schedule__appointment-time" [attr.datetime]="c.hora">
+          {{ c.hora }}
+        </time>
+        <div class="schedule__appointment-details">
+          <span class="schedule__appointment-top">
+            <h3 class="schedule__appointment-title">
+              {{ c.servicio[0].categoria }}
+            </h3>
+            <p>{{ c.servicio[0].duracion }} min.</p>
+          </span>
+
+          <span class="schedule__appointment-footer">
+            <p>{{ c.servicio[0].nombre }}</p>
+
+            <small>
+              {{
+                c.servicio.length > 1
+                  ? "+" + (c.servicio.length - 1) + " Servicio(s)"
+                  : ""
+              }}
+            </small>
+          </span>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <nav class="schedule__footer-nav">
+    <button
+      aria-label="Home"
+      class="schedule__footer-button schedule__footer-button--purple"
+      *ngFor="let i of [faHome, faCalendar, faPlus, faBell, faUser]"
+    >
+      <fa-icon [icon]="i"></fa-icon>
+    </button>
+  </nav>
+</section>

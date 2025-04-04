@@ -95,12 +95,11 @@ button {
 
 /* Normalización de enlaces */
 a {
-  color: inherit;
   text-decoration: inherit;
 }
 
 p {
-  color: inherit;
+  color: var(--color-texto);
   text-wrap: pretty;
 }
 
