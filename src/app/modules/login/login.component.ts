@@ -29,7 +29,8 @@ export class LoginComponent {
   ) {
     if (!this.publicService.isBrowser) return;
 
-    if (localStorage.getItem('token')) this.router.navigate(['/dashboard']);
+    if (localStorage.getItem('tokenNicolN'))
+      this.router.navigate(['/dashboard']);
 
     this.loginForm = this.fb.group({
       celular: ['', [Validators.required, Validators.pattern(/^\d{10}$/)]],
@@ -51,7 +52,7 @@ export class LoginComponent {
 
           if (!this.publicService.isBrowser) return;
 
-          localStorage.setItem('token', response.token);
+          localStorage.setItem('tokenNicolN', response.token);
 
           this.router.navigate(['/dashboard']);
         },

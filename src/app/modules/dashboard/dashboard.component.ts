@@ -11,7 +11,7 @@ export class DashboardComponent {
   constructor(private publicService: PublicService, private router: Router) {
     if (!this.publicService.isBrowser) return;
 
-    let token = localStorage.getItem('token');
+    let token = localStorage.getItem('tokenNicolN');
 
     this.router.navigate([!token ? 'salon' : '/dashboard/citas']);
   }

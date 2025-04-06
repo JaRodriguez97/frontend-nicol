@@ -103,6 +103,12 @@ p {
   text-wrap: pretty;
 }
 
+/*a,
+strong,
+span {
+ color: var(--primary-color); 
+}*/
+
 /* Quitar estilos predeterminados de tablas */
 table {
   border-collapse: collapse;

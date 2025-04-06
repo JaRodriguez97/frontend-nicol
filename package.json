@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "c": "ng g c components/svgFlower --skip-import",
+    "c": "ng g c components/cita/createCita --skip-import",
     "d": "ng generate directive directives/dynamicTag --skip-import",
     "m": "ng g m modules/citas/citas -m=app --route citas --flat",
     "s": "ng g s services/Citas/citas",
