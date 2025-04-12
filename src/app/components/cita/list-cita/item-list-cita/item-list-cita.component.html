@@ -1,0 +1,43 @@
+<article
+  class="schedule__appointment"
+  *ngFor="let c of citasService.listCitasSelected"
+>
+  <time class="schedule__appointment-time" [attr.datetime]="c.hora">
+    {{ c.hora }}
+  </time>
+  <a
+    [ngClass]="{
+      active: !!c.servicio.length,
+      'schedule__appointment-details': true
+    }"
+    [routerLink]="['/dashboard/citas', c._id ? c._id : 'create']"
+  >
+    <span class="schedule__appointment-top">
+      <h3 class="schedule__appointment-title">
+        {{
+          c.servicio.length && c.servicio[0].categoria
+            ? c.servicio[0].categoria
+            : "Disponible"
+        }}
+      </h3>
+
+      <p>
+        {{
+          c.servicio.length && c.servicio[0].duracion
+            ? c.servicio[0].duracion + " min."
+            : ""
+        }}
+      </p>
+    </span>
+
+    <small>
+      {{
+        c.servicio.length > 1
+          ? "+" + (c.servicio.length - 1) + " Servicio(s)"
+          : !c.servicio.length
+          ? "Solicitar Cita"
+          : ""
+      }}
+    </small>
+  </a>
+</article>
