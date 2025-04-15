@@ -11,6 +11,7 @@
       'schedule__appointment-details': true
     }"
     [routerLink]="['/dashboard/citas', c._id ? c._id : 'create']"
+    (click)="setSelectedDate(c.hora)"
   >
     <span class="schedule__appointment-top">
       <h3 class="schedule__appointment-title">

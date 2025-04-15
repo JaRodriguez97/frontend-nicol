@@ -48,6 +48,8 @@ export class CitasService {
   today = new Date();
   month = this.today.getMonth();
   SelectDay = this.today.getDate();
+  SelectDate = '';
+  hourSelected!: string; /*  */
 
   constructor(private http: HttpClient) {}
 
@@ -58,6 +60,11 @@ export class CitasService {
     });
   }
 
+  leerCitas(token: string): Observable<any> {
+    let headers = this.headers(token);
+
+    return this.http.get<any>(this.apiUrl, { headers });
+  }
   getCitas(token: string) {
     this.leerCitas(token).subscribe({
       next: (res: any) => (this.listCitasAll = res),
@@ -67,10 +74,10 @@ export class CitasService {
     });
   }
 
-  leerCitas(token: string): Observable<any> {
+  createCita(token: string, data: any) {
     let headers = this.headers(token);
 
-    return this.http.get<any>(this.apiUrl, { headers });
+    return this.http.post<any>(this.apiUrl, data, { headers });
   }
 
   getSelectDay(day: string | number) {
@@ -90,7 +97,6 @@ export class CitasService {
 
     this.listCitasSelected = [...this.listCitasSelected, ...populateArrayCitas];
 
-
     // Ordenar por fecha y hora
     this.listCitasSelected.sort(
       (
@@ -101,10 +107,6 @@ export class CitasService {
         const dateB = new Date(`${b.fecha} ${b.hora}`).getTime();
         return dateA - dateB;
       }
-    );
-    console.log(
-      '🚀 ~ CitasService ~ getSelectDay ~ this.listCitasSelected:',
-      this.listCitasSelected
     );
     // if (this.flexWrap) this.cambiarModoCalendario();
   }

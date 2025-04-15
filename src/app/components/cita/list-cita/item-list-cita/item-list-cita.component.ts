@@ -21,5 +21,12 @@ export class ItemListCitaComponent {
     else this.citasService.getCitas(token);
   }
 
-
+  setSelectedDate(hora: string) {
+    this.citasService.hourSelected = hora;
+    this.citasService.SelectDate =
+      this.citasService.formatNumber(Number(this.citasService.month) + 1) +
+      '/' +
+      this.citasService.SelectDay +
+      '/2025';
+  }
 }
