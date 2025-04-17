@@ -1,5 +1,6 @@
 <section class="container">
   <form
+    *ngIf="formulario"
     [formGroup]="formulario"
     (ngSubmit)="submitFormCreateCita()"
     class="formulario"
@@ -13,7 +14,17 @@
         type="number"
         placeholder="Ejemplo: 3112223344"
         required
+        [ngClass]="{
+          'input-invalid': campoCelular?.invalid && campoCelular?.touched,
+          'input-valid': campoCelular?.valid
+        }"
       />
+      <div
+        class="error"
+        *ngIf="formulario.controls['celular']?.errors?.['pattern'] != null || !formulario.controls['celular']?.value"
+      >
+        Inicia con 3 y debe tener 10 digitos
+      </div>
     </label>
 
     <label>
@@ -22,7 +33,7 @@
         formControlName="categoria"
         (change)="oncategoriaChange($event.target)"
       >
-        <option value="">Selecciona uno</option>
+        <option value="" selected disabled>Selecciona uno</option>
         <option *ngFor="let c of categorias" [value]="c">{{ c }}</option>
       </select>
     </label>
@@ -33,26 +44,56 @@
         formControlName="servicio"
         (change)="onServicioChange($event.target)"
       >
-        <option value="">Selecciona un servicio</option>
+        <option value="" selected disabled>Selecciona un servicio</option>
         <option *ngFor="let s of serviciosDisponibles" [value]="s.nombre">
           {{ s.nombre }}
         </option>
       </select>
     </label>
 
-    <div class="info" *ngIf="infoServicio">{{ infoServicio }}</div>
+    <label *ngIf="segundoServicio">
+      Tipo de servicio 2
+      <select
+        formControlName="categoria2"
+        (change)="oncategoria2Change($event.target)"
+      >
+        <option value="" selected disabled>Selecciona uno</option>
+        <option *ngFor="let c of categorias" [value]="c">{{ c }}</option>
+      </select>
+    </label>
 
-    <label
-      >Fecha<input
-        formControlName="fecha"
-        type="date"
-        required
-    /></label>
+    <label *ngIf="segundoServicio">
+      Servicio 2
+      <select
+        formControlName="servicio2"
+        (change)="onServicio2Change($event.target)"
+      >
+        <option value="" selected disabled>Selecciona un servicio</option>
+        <option *ngFor="let s of serviciosDisponibles" [value]="s.nombre">
+          {{ s.nombre }}
+        </option>
+      </select>
+    </label>
 
-    <label
-      >Hora
-      <input formControlName="hora" type="time" required
-    /></label>
+    <button
+      *ngIf="
+        formulario.controls['servicio']?.valid &&
+        formulario.controls['categoria']?.valid
+      "
+      type="button"
+      (click)="agregarServicio()"
+    >
+      {{ segundoServicio ? "- Quitar Un Servicio" : "+ Agregar Otro Servicio" }}
+    </button>
+
+    <div class="info" *ngIf="totalPrecio && totalDuracion">
+      💰 {{ totalPrecio | currency : "$" : "symbol" : "1.0-0" }} | ⏱️
+      {{ totalDuracion }} min
+    </div>
+
+    <label>Fecha<input formControlName="fecha" type="date" required /></label>
+
+    <label>Hora <input formControlName="hora" type="time" required /></label>
 
     <button type="submit" [disabled]="formulario.invalid">Reservar</button>
   </form>

@@ -31,6 +31,25 @@ select {
   border-radius: 5px;
 }
 
+input.input-valid,
+select.input-valid {
+  border-color: var(--primary-color);
+}
+
+input:focus,
+select:focus,
+input:focus-visible,
+select:focus-visible {
+  border-color: var(--primary-color-opacity);
+}
+
+input:invalid,
+select:invalid,
+input.input-invalid,
+select.input-invalid {
+  border-color: red;
+}
+
 button {
   margin-top: 1.5rem;
   padding: 0.75rem;
@@ -49,6 +68,10 @@ button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
   background: gray;
+}
+
+.error {
+  color: red;
 }
 
 .info {

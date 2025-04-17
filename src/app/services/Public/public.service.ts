@@ -46,8 +46,6 @@ export class PublicService {
         this.isMobile = true;
       else this.isMobile = false;
     }
-
-    console.log('El dispositivo usado es un celular: ', this.isMobile);
   }
 
   // headers() {

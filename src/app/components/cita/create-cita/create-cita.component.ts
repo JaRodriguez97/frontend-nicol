@@ -23,10 +23,13 @@ export class CreateCitaComponent {
       duracion: number;
     }>;
   };
+  segundoServicio = false;
 
   token!: string;
   fechaISO!: string;
   hora24!: string;
+  totalPrecio = 0;
+  totalDuracion = 0;
 
   constructor(
     public publicService: PublicService,
@@ -38,9 +41,19 @@ export class CreateCitaComponent {
     if (!publicService.isBrowser) return;
 
     this.formulario = this.fb.group({
-      celular: ['', Validators.required],
+      celular: [
+        null,
+        [
+          Validators.required, // El campo es obligatorio
+          Validators.pattern(/^[3]{1}[0-9]{9}$/), // Patrón para números colombianos (ej: 3XXXXXXXXX)
+          Validators.minLength(10), // Longitud mínima
+          Validators.maxLength(10), // Longitud máxima
+        ],
+      ],
       categoria: ['', Validators.required],
       servicio: ['', Validators.required],
+      categoria2: [''],
+      servicio2: [''],
       fecha: ['', Validators.required],
       hora: ['', Validators.required],
     });
@@ -49,6 +62,32 @@ export class CreateCitaComponent {
 
     this.setDateHourSelected();
     this.getServicios();
+    this.setDisabledSelects();
+  }
+
+  setDisabledSelects() {
+    this.formulario.get('categoria')?.disable();
+    this.formulario.get('servicio')?.disable();
+
+    this.formulario.get('fecha')?.disable();
+    this.formulario.get('hora')?.disable();
+
+    this.formulario.get('celular')?.valueChanges.subscribe(() => {
+      const celularControl = this.formulario.get('celular');
+      if (celularControl?.valid) {
+        this.formulario.get('categoria')?.enable();
+      } else {
+        this.formulario.get('categoria')?.disable();
+        this.formulario.get('servicio')?.disable();
+
+        this.formulario.get('categoria')?.setValue('');
+        this.formulario.get('servicio')?.setValue('');
+      }
+    });
+  }
+
+  get campoCelular() {
+    return this.formulario?.get('celular');
   }
 
   setDateHourSelected() {
@@ -71,10 +110,6 @@ export class CreateCitaComponent {
       fecha: this.fechaISO,
       hora: this.hora24,
     });
-
-    // Opcional: desactivar campos para que no se puedan modificar
-    this.formulario.get('fecha')?.disable();
-    this.formulario.get('hora')?.disable();
   }
 
   getServicios() {
@@ -88,7 +123,16 @@ export class CreateCitaComponent {
   oncategoriaChange(target: EventTarget | null) {
     const categoria = (target as HTMLSelectElement).value;
     this.serviciosDisponibles = this.todosLosServicios[categoria] || [];
-    this.formulario.get('servicio')?.reset();
+    this.formulario.get('servicio')?.setValue('');
+    this.formulario.get('servicio')?.enable();
+    this.infoServicio = '';
+  }
+
+  oncategoria2Change(target: EventTarget | null) {
+    const categoria = (target as HTMLSelectElement).value;
+    this.serviciosDisponibles = this.todosLosServicios[categoria] || [];
+    this.formulario.get('servicio2')?.setValue('');
+    this.formulario.get('servicio2')?.enable();
     this.infoServicio = '';
   }
 
@@ -98,12 +142,35 @@ export class CreateCitaComponent {
     const servicio = this.todosLosServicios[categoria]?.find(
       (s) => s.nombre === nombreServicio
     );
-    if (servicio)
-      this.infoServicio = `💰 $${servicio.precio} | ⏱️ ${servicio.duracion} min`;
+    if (servicio) {
+      this.totalPrecio = servicio.precio;
+      this.totalDuracion = servicio.duracion;
+    }
+  }
+
+  onServicio2Change(target: EventTarget | null) {
+    const nombreServicio = (target as HTMLSelectElement).value;
+    const categoria = this.formulario.value.categoria;
+    const servicio = this.todosLosServicios[categoria]?.find(
+      (s) => s.nombre === nombreServicio
+    );
+    if (servicio) {
+      this.totalPrecio +=
+        servicio.precio; /* No está sumando los valores de los respectivos selects */
+      this.totalDuracion += servicio.duracion;
+    }
+  }
+
+  agregarServicio() {
+    this.segundoServicio = !this.segundoServicio;
   }
 
   submitFormCreateCita() {
     if (this.formulario.valid) {
+      console.log(
+        '🚀 ~ CreateCitaComponent ~ submitFormCreateCita ~ this.formulario:',
+        this.formulario.value
+      );
       this.citasService.createCita(this.token, {}).subscribe({
         next: (res) => {},
         error: (err) => {},
