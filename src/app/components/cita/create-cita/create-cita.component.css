@@ -1,5 +1,6 @@
 section.container {
   padding: 0;
+  height: fit-content;
 }
 
 .formulario {

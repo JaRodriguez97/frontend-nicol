@@ -12,15 +12,20 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./create-cita.component.css'],
 })
 export class CreateCitaComponent {
+  cancelarCita() {
+    throw new Error('Method not implemented.');
+  }
   formulario!: FormGroup;
   categorias!: Array<string>;
   serviciosDisponibles: any[] = [];
+  serviciosDisponibles2: any[] = [];
   infoServicio = '';
   todosLosServicios!: {
     [key: string]: Array<{
       nombre: string;
       precio: number;
       duracion: number;
+      _id: string;
     }>;
   };
   segundoServicio = false;
@@ -30,6 +35,18 @@ export class CreateCitaComponent {
   hora24!: string;
   totalPrecio = 0;
   totalDuracion = 0;
+  servicioSelected!: {
+    nombre: string;
+    precio: number;
+    duracion: number;
+    _id: string;
+  };
+  servicioSelected2!: {
+    nombre: string;
+    precio: number;
+    duracion: number;
+    _id: string;
+  };
 
   constructor(
     public publicService: PublicService,
@@ -42,7 +59,7 @@ export class CreateCitaComponent {
 
     this.formulario = this.fb.group({
       celular: [
-        null,
+        324397394,
         [
           Validators.required, // El campo es obligatorio
           Validators.pattern(/^[3]{1}[0-9]{9}$/), // Patrón para números colombianos (ej: 3XXXXXXXXX)
@@ -130,7 +147,7 @@ export class CreateCitaComponent {
 
   oncategoria2Change(target: EventTarget | null) {
     const categoria = (target as HTMLSelectElement).value;
-    this.serviciosDisponibles = this.todosLosServicios[categoria] || [];
+    this.serviciosDisponibles2 = this.todosLosServicios[categoria] || [];
     this.formulario.get('servicio2')?.setValue('');
     this.formulario.get('servicio2')?.enable();
     this.infoServicio = '';
@@ -139,39 +156,75 @@ export class CreateCitaComponent {
   onServicioChange(target: EventTarget | null) {
     const nombreServicio = (target as HTMLSelectElement).value;
     const categoria = this.formulario.value.categoria;
-    const servicio = this.todosLosServicios[categoria]?.find(
-      (s) => s.nombre === nombreServicio
-    );
-    if (servicio) {
-      this.totalPrecio = servicio.precio;
-      this.totalDuracion = servicio.duracion;
-    }
+    this.servicioSelected = this.todosLosServicios[categoria]?.find(
+      (s) => s._id === nombreServicio
+    )!;
+
+    this.totalPrecio =
+      this.servicioSelected2 && this.servicioSelected2.precio
+        ? this.servicioSelected2.precio + this.servicioSelected.precio
+        : this.servicioSelected.precio;
+    this.totalDuracion =
+      this.servicioSelected2 && this.servicioSelected2.duracion
+        ? this.servicioSelected2.duracion + this.servicioSelected.duracion
+        : this.servicioSelected.duracion;
   }
 
   onServicio2Change(target: EventTarget | null) {
     const nombreServicio = (target as HTMLSelectElement).value;
-    const categoria = this.formulario.value.categoria;
-    const servicio = this.todosLosServicios[categoria]?.find(
-      (s) => s.nombre === nombreServicio
-    );
-    if (servicio) {
-      this.totalPrecio +=
-        servicio.precio; /* No está sumando los valores de los respectivos selects */
-      this.totalDuracion += servicio.duracion;
-    }
+    const categoria = this.formulario.value.categoria2;
+    this.servicioSelected2 = this.todosLosServicios[categoria]?.find(
+      (s) => s._id === nombreServicio
+    )!;
+
+    this.totalPrecio =
+      this.servicioSelected.precio + this.servicioSelected2.precio;
+    this.totalDuracion =
+      this.servicioSelected.duracion + this.servicioSelected2.duracion;
   }
 
-  agregarServicio() {
+  toggleExtraServicio() {
+    if (this.segundoServicio) {
+      this.formulario.get('categoria2')?.setValue('');
+      this.formulario.get('servicio2')?.setValue('');
+      this.serviciosDisponibles2 = [];
+
+      this.totalPrecio =
+        this.todosLosServicios[this.formulario.value.categoria]?.find(
+          (s) => s._id === this.formulario.value.servicio
+        )?.precio || 0;
+      this.totalDuracion =
+        this.todosLosServicios[this.formulario.value.categoria]?.find(
+          (s) => s._id === this.formulario.value.servicio
+        )?.duracion || 0;
+
+      this.servicioSelected2 = {
+        nombre: '',
+        precio: 0,
+        duracion: 0,
+        _id: '',
+      };
+    }
+
+    this.formulario.get('servicio2')?.disable();
     this.segundoServicio = !this.segundoServicio;
   }
 
   submitFormCreateCita() {
     if (this.formulario.valid) {
-      console.log(
-        '🚀 ~ CreateCitaComponent ~ submitFormCreateCita ~ this.formulario:',
-        this.formulario.value
-      );
-      this.citasService.createCita(this.token, {}).subscribe({
+      let form = {
+        celular: this.formulario.value.celular,
+        fecha: this.fechaISO,
+        hora: this.hora24,
+        servicio: [
+          this.formulario.value.servicio,
+          this.formulario.value.servicio2,
+        ],
+        duracion: this.totalDuracion,
+        precio: this.totalPrecio,
+      };
+
+      this.citasService.createCita(this.token, form).subscribe({
         next: (res) => {},
         error: (err) => {},
         complete: () => {},

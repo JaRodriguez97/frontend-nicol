@@ -69,7 +69,7 @@ export class CitasService {
     this.leerCitas(token).subscribe({
       next: (res: any) => (this.listCitasAll = res),
       error: (err: any) =>
-        console.error('🚀 ~ citasService ~ leerCitas ~ err:', err),
+        console.error('🚀 ~ citasService ~ leerCitas ~ err:', { err: err.status }),
       complete: () => this.getSelectDay(this.formatNumber(this.SelectDay)),
     });
   }

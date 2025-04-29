@@ -33,7 +33,7 @@
         formControlName="categoria"
         (change)="oncategoriaChange($event.target)"
       >
-        <option value="" selected disabled>Selecciona uno</option>
+        <option value="" selected disabled>Selecciona primero</option>
         <option *ngFor="let c of categorias" [value]="c">{{ c }}</option>
       </select>
     </label>
@@ -45,7 +45,7 @@
         (change)="onServicioChange($event.target)"
       >
         <option value="" selected disabled>Selecciona un servicio</option>
-        <option *ngFor="let s of serviciosDisponibles" [value]="s.nombre">
+        <option *ngFor="let s of serviciosDisponibles" [value]="s._id">
           {{ s.nombre }}
         </option>
       </select>
@@ -57,7 +57,7 @@
         formControlName="categoria2"
         (change)="oncategoria2Change($event.target)"
       >
-        <option value="" selected disabled>Selecciona uno</option>
+        <option value="" selected disabled>Selecciona segundo</option>
         <option *ngFor="let c of categorias" [value]="c">{{ c }}</option>
       </select>
     </label>
@@ -69,19 +69,16 @@
         (change)="onServicio2Change($event.target)"
       >
         <option value="" selected disabled>Selecciona un servicio</option>
-        <option *ngFor="let s of serviciosDisponibles" [value]="s.nombre">
+        <option *ngFor="let s of serviciosDisponibles2" [value]="s._id">
           {{ s.nombre }}
         </option>
       </select>
     </label>
 
     <button
-      *ngIf="
-        formulario.controls['servicio']?.valid &&
-        formulario.controls['categoria']?.valid
-      "
       type="button"
-      (click)="agregarServicio()"
+      (click)="toggleExtraServicio()"
+      [disabled]="!formulario.value.servicio && !formulario.value.servicio2"
     >
       {{ segundoServicio ? "- Quitar Un Servicio" : "+ Agregar Otro Servicio" }}
     </button>
@@ -91,10 +88,19 @@
       {{ totalDuracion }} min
     </div>
 
-    <label>Fecha<input formControlName="fecha" type="date" required /></label>
+    <label
+      >Fecha<input
+        formControlName="fecha"
+        type="date"
+        required
+        [value]="fechaISO"
+    /></label>
 
-    <label>Hora <input formControlName="hora" type="time" required /></label>
+    <label
+      >Hora <input formControlName="hora" type="time" required [value]="hora24"
+    /></label>
 
     <button type="submit" [disabled]="formulario.invalid">Reservar</button>
+    <!-- <button type="button" (click)="cancelarCita()">Cancelar</button> -->
   </form>
 </section>
