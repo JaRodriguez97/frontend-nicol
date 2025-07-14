@@ -1,0 +1,75 @@
+<section class="mis-citas-container">
+  <header class="mis-citas-header">
+    <h1>Mis Citas</h1>
+    <p class="subtitle">Consulta y administra tus citas agendadas</p>
+  </header>
+
+  <div class="search-container">
+    <form [formGroup]="formulario" (ngSubmit)="buscarCitas()" class="search-form">
+      <div class="form-group">
+        <label for="celular">Número de WhatsApp o Celular</label>
+        <div class="input-with-button">
+          <input
+            type="tel"
+            id="celular"
+            formControlName="celular"
+            placeholder="Ej: 3112223344"
+            maxlength="10"
+          />
+          <button type="submit" [disabled]="formulario.invalid || cargando" class="search-button">
+            <i class="fas fa-search"></i>
+            {{ cargando ? 'Buscando...' : 'Buscar' }}
+          </button>
+        </div>
+        <small *ngIf="formulario.get('celular')?.hasError('pattern') && formulario.get('celular')?.touched" class="error-message">
+          Debe comenzar con 3 y tener 10 dígitos
+        </small>
+      </div>
+    </form>
+  </div>
+
+  <div *ngIf="citas.length > 0" class="citas-list">
+    <div *ngFor="let cita of citas" class="cita-card">
+      <div class="cita-header">
+        <div class="fecha-hora">
+          <div class="fecha">{{ formatDate(cita.fecha) }}</div>
+          <div class="hora">{{ cita.hora }}</div>
+        </div>
+        <div class="estado" [ngClass]="getEstadoClass(cita.estado)">
+          {{ cita.estado }}
+        </div>
+      </div>
+      
+      <div class="cita-content">
+        <h3>Servicios</h3>
+        <ul class="servicios-list">
+          <li *ngFor="let servicio of cita.servicio" class="servicio-item">
+            <div class="servicio-info">
+              <div class="servicio-nombre">{{ servicio.nombre }}</div>
+              <div class="servicio-categoria">{{ servicio.categoria }}</div>
+            </div>
+            <div class="servicio-detalles">
+              <span class="duracion">{{ servicio.duracion }} min</span>
+              <span class="precio">{{ servicio.precio | currency:'COP':'symbol-narrow':'1.0-0' }}</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  
+  <div *ngIf="citas.length === 0 && !cargando && celular" class="no-citas-message">
+    <div class="message-icon">
+      <i class="fas fa-calendar-times"></i>
+    </div>
+    <h3>No se encontraron citas</h3>
+    <p>No hay citas registradas para el número {{ celular }}</p>
+  </div>
+
+  <div class="actions-container">
+    <button (click)="nuevaCita()" class="action-button">
+      <i class="fas fa-plus-circle"></i>
+      Agendar nueva cita
+    </button>
+  </div>
+</section>

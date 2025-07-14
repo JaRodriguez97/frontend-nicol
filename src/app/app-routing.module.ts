@@ -12,8 +12,28 @@ const routes: Routes = [
     loadChildren: () =>
       import('./modules/login/login.module').then((m) => m.LoginModule),
   },
-  { path: 'dashboard', loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule) },
-  { path: 'citas', loadChildren: () => import('./modules/citas/citas.module').then(m => m.CitasModule) },
+  {
+    path: 'dashboard',
+    loadChildren: () =>
+      import('./modules/dashboard/dashboard.module').then(
+        (m) => m.DashboardModule
+      ),
+  },
+  {
+    path: 'citas',
+    loadChildren: () =>
+      import('./modules/citas/citas.module').then((m) => m.CitasModule),
+  },
+  {
+    path: 'mis-citas',
+    loadChildren: () =>
+      import('./modules/citas/citas.module').then((m) => m.CitasModule),
+  },
+  {
+    path: 'mis-citas/:celular',
+    loadChildren: () =>
+      import('./modules/citas/citas.module').then((m) => m.CitasModule),
+  },
   { path: '**', redirectTo: '' },
 ];
 

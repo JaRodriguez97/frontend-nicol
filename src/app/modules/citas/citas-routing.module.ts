@@ -4,6 +4,7 @@ import { CitasComponent } from './citas.component';
 import { ListCitaComponent } from '@components/cita/list-cita/list-cita.component';
 import { ReadCitaComponent } from '@components/cita/read-cita/read-cita.component';
 import { CreateCitaComponent } from '@components/cita/create-cita/create-cita.component';
+import { MisCitasComponent } from '@components/cita/mis-citas/mis-citas.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,14 @@ const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'mis-citas',
+    component: MisCitasComponent
+  },
+  {
+    path: 'mis-citas/:celular',
+    component: MisCitasComponent
+  }
 ];
 
 @NgModule({

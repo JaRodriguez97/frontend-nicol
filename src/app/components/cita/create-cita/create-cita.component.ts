@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { CitasService } from '@services/Citas/citas.service';
 import { PublicService } from '@services/Public/public.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NotificationService } from '@services/notification/notification.service';
 
 @Component({
   selector: 'app-create-cita',
@@ -53,7 +54,8 @@ export class CreateCitaComponent {
     public router: Router,
     public citasService: CitasService,
     public serviciosApiService: ServiciosApiService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private notificationService: NotificationService
   ) {
     if (!publicService.isBrowser) return;
 
@@ -212,22 +214,48 @@ export class CreateCitaComponent {
 
   submitFormCreateCita() {
     if (this.formulario.valid) {
+      // Remove empty service entries
+      const servicios = [
+        this.formulario.value.servicio
+      ];
+      
+      if (this.segundoServicio && this.formulario.value.servicio2) {
+        servicios.push(this.formulario.value.servicio2);
+      }
+      
       let form = {
         celular: this.formulario.value.celular,
-        fecha: this.fechaISO,
-        hora: this.hora24,
-        servicio: [
-          this.formulario.value.servicio,
-          this.formulario.value.servicio2,
-        ],
+        fecha: this.citasService.SelectDate,
+        hora: this.citasService.hourSelected,
+        servicio: servicios.filter(s => s), // Remove any null/undefined values
         duracion: this.totalDuracion,
         precio: this.totalPrecio,
       };
 
+      // Disable form during submission
+      this.formulario.disable();
+      
+      // Guardar el celular en localStorage para futuras consultas
+      localStorage.setItem('ultimoCelular', form.celular.toString());
+      
       this.citasService.createCita(this.token, form).subscribe({
-        next: (res) => {},
-        error: (err) => {},
-        complete: () => {},
+        next: (res) => {
+          this.notificationService.success('¡Cita creada con éxito! Recibirás confirmación por WhatsApp.');
+          
+          // Redirigir a la página de mis citas con el celular
+          setTimeout(() => {
+            this.router.navigate(['/mis-citas', form.celular]);
+          }, 1500);
+        },
+        error: (err) => {
+          console.error('Error al crear la cita:', err);
+          this.notificationService.error(err.error?.mensaje || 'Error al crear la cita. Por favor, intenta nuevamente.');
+          this.formulario.enable();
+        },
+        complete: () => {
+          // Re-enable the form
+          this.formulario.enable();
+        },
       });
     }
   }

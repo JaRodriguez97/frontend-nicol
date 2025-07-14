@@ -1,6 +1,14 @@
 <article
   class="schedule__appointment"
   *ngFor="let c of citasService.listCitasSelected"
+  [ngClass]="{
+    'appointment-pending': c.estado === 'Pendiente',
+    'appointment-approved': c.estado === 'Aprobada',
+    'appointment-in-progress': c.estado === 'En progreso',
+    'appointment-completed': c.estado === 'Completada',
+    'appointment-cancelled': c.estado.includes('Cancelada'),
+    'appointment-missed': c.estado === 'No asistió'
+  }"
 >
   <time class="schedule__appointment-time" [attr.datetime]="c.hora">
     {{ c.hora }}
@@ -10,7 +18,7 @@
       active: !!c.servicio.length,
       'schedule__appointment-details': true
     }"
-    [routerLink]="['/dashboard/citas', c._id ? c._id : 'create']"
+    [routerLink]="c._id ? ['/dashboard/citas', c._id] : ['/citas/create']"
     (click)="setSelectedDate(c.hora)"
   >
     <span class="schedule__appointment-top">
@@ -30,6 +38,12 @@
         }}
       </p>
     </span>
+
+    <span class="appointment-status" *ngIf="c.estado">
+      {{ c.estado }}
+    </span>
+
+    <small *ngIf="c.celular"> Tel: {{ c.celular }} </small>
 
     <small>
       {{

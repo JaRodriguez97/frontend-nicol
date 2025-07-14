@@ -8,6 +8,8 @@ import { ListCitaComponent } from '@components/cita/list-cita/list-cita.componen
 import { ReadCitaComponent } from '@components/cita/read-cita/read-cita.component';
 import { ItemListCitaComponent } from '@components/cita/list-cita/item-list-cita/item-list-cita.component';
 import { CreateCitaComponent } from '@components/cita/create-cita/create-cita.component';
+import { MisCitasComponent } from '@components/cita/mis-citas/mis-citas.component';
+import { SharedModule } from '@components/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -15,7 +17,8 @@ import { CreateCitaComponent } from '@components/cita/create-cita/create-cita.co
     ListCitaComponent,
     ReadCitaComponent,
     ItemListCitaComponent,
-    CreateCitaComponent
+    CreateCitaComponent,
+    MisCitasComponent
   ],
   imports: [
     CommonModule,
@@ -23,6 +26,7 @@ import { CreateCitaComponent } from '@components/cita/create-cita/create-cita.co
     FontAwesomeModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule
   ],
 })
 export class CitasModule {}

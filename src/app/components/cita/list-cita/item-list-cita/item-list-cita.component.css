@@ -54,3 +54,41 @@
 .schedule__appointment-title {
   font-weight: 600;
 }
+
+.appointment-status {
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 10px;
+  margin-bottom: 4px;
+}
+
+.appointment-pending .appointment-status {
+  background-color: #ffcb6b;
+  color: #856404;
+}
+
+.appointment-approved .appointment-status {
+  background-color: #9fe6a0;
+  color: #155724;
+}
+
+.appointment-in-progress .appointment-status {
+  background-color: #90caf9;
+  color: #004085;
+}
+
+.appointment-completed .appointment-status {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.appointment-cancelled .appointment-status {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.appointment-missed .appointment-status {
+  background-color: #f8d7da;
+  color: #721c24;
+}

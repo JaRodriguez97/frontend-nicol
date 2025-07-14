@@ -51,7 +51,16 @@ export class CitasService {
   SelectDate = '';
   hourSelected!: string; /*  */
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // Initialize the date if it's not set
+    if (!this.SelectDate) {
+      this.SelectDate =
+        this.formatNumber(Number(this.month) + 1) +
+        '/' +
+        this.SelectDay +
+        '/2025';
+    }
+  }
 
   headers(token: string) {
     return new HttpHeaders({
@@ -69,7 +78,9 @@ export class CitasService {
     this.leerCitas(token).subscribe({
       next: (res: any) => (this.listCitasAll = res),
       error: (err: any) =>
-        console.error('🚀 ~ citasService ~ leerCitas ~ err:', { err: err.status }),
+        console.error('🚀 ~ citasService ~ leerCitas ~ err:', {
+          err: err.status,
+        }),
       complete: () => this.getSelectDay(this.formatNumber(this.SelectDay)),
     });
   }
@@ -80,10 +91,16 @@ export class CitasService {
     return this.http.post<any>(this.apiUrl, data, { headers });
   }
 
+  // Método para obtener citas por número de celular (público)
+  obtenerCitasPorCelular(celular: number) {
+    return this.http.get<any>(`${this.apiUrl}/celular/${celular}`);
+  }
+
   getSelectDay(day: string | number) {
     this.SelectDay = day as unknown as number;
 
     let f = this.formatNumber(Number(this.month) + 1) + '/' + day + '/2025';
+    console.log("🚀 ~ CitasService ~ getSelectDay ~ f:", f)
 
     // Filtrar citas por fecha
     this.listCitasSelected = this.listCitasAll.filter(
@@ -97,16 +114,30 @@ export class CitasService {
 
     this.listCitasSelected = [...this.listCitasSelected, ...populateArrayCitas];
 
-    // Ordenar por fecha y hora
-    this.listCitasSelected.sort(
-      (
-        a: { fecha: string; hora: string },
-        b: { fecha: string; hora: string }
-      ) => {
-        const dateA = new Date(`${a.fecha} ${a.hora}`).getTime();
-        const dateB = new Date(`${b.fecha} ${b.hora}`).getTime();
-        return dateA - dateB;
-      }
+    // Función auxiliar para convertir hora en formato 12h a minutos para comparación
+    const horaAMinutos = (horaStr: string): number => {
+      const [time, modifier] = horaStr.split(' ');
+      let [hours, minutes] = time.split(':').map(Number);
+      if (modifier === 'PM' && hours !== 12) hours += 12;
+      if (modifier === 'AM' && hours === 12) hours = 0;
+      return hours * 60 + minutes;
+    };
+
+    // Ordenar por hora (convertida a minutos para una comparación precisa)
+    this.listCitasSelected.sort((a, b) => {
+      return horaAMinutos(a.hora) - horaAMinutos(b.hora);
+    });
+    console.log(
+      /* 🚀 no encuentro la filtración de por que no enlista bien las citas, pendiente lo que sugiere la consola
+        - Próximos pasos recomendados
+        1. Implementar pruebas: Añadir pruebas unitarias y de integración para asegurar que todo funcione correctamente.
+        2. Dashboard mejorado para administrador: Expandir las funcionalidades del panel de administración para la dueña del negocio.
+        3. Notificaciones por WhatsApp: Integrar un servicio como Twilio para enviar recordatorios automáticos a los clientes.
+        4. PWA: Convertir la aplicación en una Progressive Web App para que pueda instalarse en dispositivos móviles.
+        5. Calendario visual: Mejorar la visualización del calendario para mostrar la disponibilidad de manera más intuitiva. 
+      */
+      '🚀 ~ CitasService ~ this.listCitasSelected.sort ~ this.listCitasSelected:',
+      this.listCitasSelected
     );
     // if (this.flexWrap) this.cambiarModoCalendario();
   }
