@@ -1,0 +1,43 @@
+<div 
+  class="card cursor-pointer transition-all duration-300 hover:shadow-lg"
+  [class.ring-2]="isSelected"
+  [class.ring-primary-500]="isSelected"
+  [class.bg-primary-50]="isSelected"
+  (click)="onSelect()"
+>
+  <div class="flex justify-between items-start mb-3">
+    <div>
+      <h4 class="font-semibold text-gray-900">{{ servicio.nombre }}</h4>
+      <span [class]="getColorCategoria() + ' status-badge text-xs'">
+        {{ servicio.categoria }}
+      </span>
+    </div>
+    <div class="text-right">
+      <p class="text-lg font-bold text-primary-600">{{ formatearPrecio() }}</p>
+      <p class="text-sm text-gray-600">{{ formatearDuracion() }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="isSelected" class="flex items-center text-sm text-primary-600 mb-2">
+    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    </svg>
+    Seleccionado
+  </div>
+
+  <!-- Acciones para admin -->
+  <div *ngIf="isAdmin" class="flex justify-end space-x-2 mt-3 pt-3 border-t border-gray-200">
+    <button
+      (click)="onEdit()"
+      class="text-sm text-blue-600 hover:text-blue-700 font-medium"
+    >
+      Editar
+    </button>
+    <button
+      (click)="onDelete()"
+      class="text-sm text-red-600 hover:text-red-700 font-medium"
+    >
+      Eliminar
+    </button>
+  </div>
+</div>

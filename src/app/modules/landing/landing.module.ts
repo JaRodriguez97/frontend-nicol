@@ -27,5 +27,6 @@ import { SvgFlowerComponent } from '@components/svg-flower/svg-flower.component'
     SvgFlowerComponent,
   ],
   imports: [CommonModule, LandingRoutingModule, FontAwesomeModule],
+  exports: [HeaderComponent]
 })
 export class LandingModule {}

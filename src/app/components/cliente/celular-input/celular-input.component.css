@@ -1,0 +1,55 @@
+/* Estilos específicos para el input de celular */
+.input-field {
+  transition: all 0.3s ease;
+}
+
+.input-field:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(207, 176, 190, 0.3);
+}
+
+/* Animaciones para validación */
+.border-green-500 {
+  animation: successPulse 0.3s ease;
+}
+
+.border-red-500 {
+  animation: errorShake 0.3s ease;
+}
+
+@keyframes successPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(34, 197, 94, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+  }
+}
+
+@keyframes errorShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Estilo para el placeholder */
+input::placeholder {
+  color: #9ca3af;
+  opacity: 0.7;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    margin: 1rem;
+  }
+}

@@ -1,3 +1,9 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+
 :root {
   --primary-color: #cfb0be;
   --primary-color-opacity: #cfb0be80;
@@ -234,4 +240,117 @@ section.container {
 
 .secondary:hover {
   background-color: #f3f4f6;
+}
+
+/* ===== Tailwind CSS Utilities ===== */
+
+/* Custom Components */
+.btn-primary {
+  @apply bg-primary-500 text-white px-6 py-3 rounded-lg font-medium hover:bg-primary-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5;
+}
+
+.btn-secondary {
+  @apply bg-white text-primary-600 px-6 py-3 rounded-lg font-medium border border-primary-200 hover:bg-primary-50 transition-all duration-300 shadow-md hover:shadow-lg;
+}
+
+.btn-outline {
+  @apply border-2 border-primary-500 text-primary-600 px-6 py-3 rounded-lg font-medium hover:bg-primary-500 hover:text-white transition-all duration-300;
+}
+
+.card {
+  @apply bg-white rounded-xl shadow-lg p-6 border border-gray-100 hover:shadow-xl transition-shadow duration-300;
+}
+
+.input-field {
+  @apply w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-300;
+}
+
+.input-field:focus {
+  @apply shadow-lg;
+}
+
+.gradient-bg {
+  background: linear-gradient(135deg, #cfb0be 0%, #d9c7cf 50%, #e9dfe4 100%);
+}
+
+.glass-effect {
+  @apply bg-white bg-opacity-20 backdrop-blur-sm border border-white border-opacity-30;
+}
+
+/* Loading Animation */
+.loading-spinner {
+  @apply animate-spin rounded-full h-8 w-8 border-b-2 border-primary-500;
+}
+
+/* Toast Notifications */
+.toast {
+  @apply fixed top-4 right-4 z-50 px-6 py-4 rounded-lg shadow-lg animate-slide-down;
+}
+
+.toast.success {
+  @apply bg-green-500 text-white;
+}
+
+.toast.error {
+  @apply bg-red-500 text-white;
+}
+
+.toast.info {
+  @apply bg-blue-500 text-white;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cfb0be;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8869a;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .card {
+    @apply p-4;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-outline {
+    @apply px-4 py-2 text-sm;
+  }
+}
+
+/* Status badges */
+.status-badge {
+  @apply px-3 py-1 rounded-full text-sm font-medium;
+}
+
+.status-pending {
+  @apply bg-yellow-100 text-yellow-800;
+}
+
+.status-approved {
+  @apply bg-green-100 text-green-800;
+}
+
+.status-completed {
+  @apply bg-blue-100 text-blue-800;
+}
+
+.status-cancelled {
+  @apply bg-red-100 text-red-800;
+}
+
+.status-in-progress {
+  @apply bg-purple-100 text-purple-800;
 }

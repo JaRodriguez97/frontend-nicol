@@ -1,0 +1,59 @@
+/* Animaciones para la card de servicio */
+.servicio-card {
+  transition: all 0.3s ease;
+}
+
+.servicio-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(207, 176, 190, 0.2);
+}
+
+/* Efecto de selección */
+.selected {
+  border-color: #cfb0be;
+  background-color: rgba(207, 176, 190, 0.1);
+  box-shadow: 0 0 0 2px rgba(207, 176, 190, 0.2);
+}
+
+/* Ring effect para selección */
+.ring-2 {
+  box-shadow: 0 0 0 2px rgba(207, 176, 190, 0.5);
+}
+
+/* Animación de selección */
+.selected-animation {
+  animation: selectPulse 0.3s ease;
+}
+
+@keyframes selectPulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Efectos hover para botones de acción */
+.action-button {
+  transition: all 0.2s ease;
+}
+
+.action-button:hover {
+  transform: scale(1.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .servicio-card {
+    margin: 0.5rem 0;
+  }
+  
+  .price-section {
+    text-align: center;
+    margin-top: 1rem;
+  }
+}

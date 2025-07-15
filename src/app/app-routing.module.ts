@@ -1,6 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+// Componentes Cliente
+import { ClienteDashboardComponent } from './components/cliente/cliente-dashboard/cliente-dashboard.component';
+import { CrearCitaComponent } from './components/cliente/crear-cita/crear-cita.component';
+import { ListaCitasComponent } from './components/cliente/lista-citas/lista-citas.component';
+
 const routes: Routes = [
   {
     path: '',
@@ -13,26 +18,16 @@ const routes: Routes = [
       import('./modules/login/login.module').then((m) => m.LoginModule),
   },
   {
-    path: 'dashboard',
-    loadChildren: () =>
-      import('./modules/dashboard/dashboard.module').then(
-        (m) => m.DashboardModule
-      ),
+    path: 'cliente',
+    component: ClienteDashboardComponent,
   },
   {
-    path: 'citas',
-    loadChildren: () =>
-      import('./modules/citas/citas.module').then((m) => m.CitasModule),
+    path: 'cliente/crear-cita',
+    component: CrearCitaComponent,
   },
   {
-    path: 'mis-citas',
-    loadChildren: () =>
-      import('./modules/citas/citas.module').then((m) => m.CitasModule),
-  },
-  {
-    path: 'mis-citas/:celular',
-    loadChildren: () =>
-      import('./modules/citas/citas.module').then((m) => m.CitasModule),
+    path: 'cliente/mis-citas',
+    component: ListaCitasComponent,
   },
   { path: '**', redirectTo: '' },
 ];

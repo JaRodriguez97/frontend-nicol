@@ -1,0 +1,30 @@
+/* Animaciones para las notificaciones */
+.toast {
+  cursor: pointer;
+  animation: slideIn 0.3s ease-out;
+  transition: all 0.3s ease;
+}
+
+.toast:hover {
+  transform: translateX(-5px);
+  opacity: 0.95;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .toast {
+    max-width: 300px;
+    margin-right: 1rem;
+  }
+}

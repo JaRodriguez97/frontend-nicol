@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { map, tap } from 'rxjs/operators';
 import { environment } from '@env/environment';
 
 @Injectable({
@@ -12,38 +13,36 @@ export class CitasService {
   readonly horaInicio = '09:00 AM';
   readonly HoraFin = '07:00 PM';
 
-  listCitasAll = [
-    {
-      _id: '',
-      celular: 3243973949,
-      fecha: '04/01/2025',
-      hora: '08:00 AM',
-      servicio: [
-        {
-          nombre: 'Manos sencillo un solo tono o francés',
-          duracion: 120,
-          categoria: 'Semipermanente',
-        },
-      ],
-      estado: 'Aprobada',
-    },
-  ];
-  listCitasSelected = [
-    {
-      _id: '',
-      celular: 3243973949,
-      fecha: '04/01/2025',
-      hora: '08:00 AM',
-      servicio: [
-        {
-          nombre: 'Manos sencillo un solo tono o francés',
-          duracion: 120,
-          categoria: 'Semipermanente',
-        },
-      ],
-      estado: 'Aprobada',
-    },
-  ];
+  // Estado observable para mantener las citas
+  private citasAllSubject = new BehaviorSubject<any[]>([]);
+  public citasAll$ = this.citasAllSubject.asObservable();
+  
+  // Estado observable para las citas seleccionadas
+  private citasSelectedSubject = new BehaviorSubject<any[]>([]);
+  public citasSelected$ = this.citasSelectedSubject.asObservable();
+  
+  // Valores de las citas para acceder sin suscripciones
+  private _listCitasAll: any[] = [];
+  private _listCitasSelected: any[] = [];
+  
+  // Getters y setters para manejar el estado de las citas
+  get listCitasAll(): any[] {
+    return this._listCitasAll;
+  }
+  
+  set listCitasAll(citas: any[]) {
+    this._listCitasAll = citas;
+    this.citasAllSubject.next(citas);
+  }
+  
+  get listCitasSelected(): any[] {
+    return this._listCitasSelected;
+  }
+  
+  set listCitasSelected(citas: any[]) {
+    this._listCitasSelected = citas;
+    this.citasSelectedSubject.next(citas);
+  }
 
   today = new Date();
   month = this.today.getMonth();
@@ -74,15 +73,18 @@ export class CitasService {
 
     return this.http.get<any>(this.apiUrl, { headers });
   }
-  getCitas(token: string) {
-    this.leerCitas(token).subscribe({
-      next: (res: any) => (this.listCitasAll = res),
-      error: (err: any) =>
-        console.error('🚀 ~ citasService ~ leerCitas ~ err:', {
-          err: err.status,
-        }),
-      complete: () => this.getSelectDay(this.formatNumber(this.SelectDay)),
-    });
+  /**
+   * Carga todas las citas y actualiza el estado
+   * @param token Token de autenticación
+   * @returns Observable que completa cuando se han cargado las citas
+   */
+  getCitas(token: string): Observable<any[]> {
+    return this.leerCitas(token).pipe(
+      tap((res: any) => {
+        this.listCitasAll = res;
+        this.getSelectDay(this.formatNumber(this.SelectDay));
+      })
+    );
   }
 
   createCita(token: string, data: any) {
@@ -90,10 +92,72 @@ export class CitasService {
 
     return this.http.post<any>(this.apiUrl, data, { headers });
   }
+  
+  /**
+   * Obtiene una cita por su ID
+   * @param token Token de autenticación
+   * @param id ID de la cita
+   * @returns Observable con la cita
+   */
+  getCitaById(token: string, id: string): Observable<any> {
+    let headers = this.headers(token);
+    
+    return this.http.get<any>(`${this.apiUrl}/${id}`, { headers });
+  }
+  
+  /**
+   * Actualiza el estado de una cita
+   * @param token Token de autenticación
+   * @param id ID de la cita
+   * @param data Datos a actualizar
+   * @returns Observable con la respuesta
+   */
+  updateCita(token: string, id: string, data: any): Observable<any> {
+    let headers = this.headers(token);
+    
+    return this.http.put<any>(`${this.apiUrl}/${id}`, data, { headers });
+  }
 
-  // Método para obtener citas por número de celular (público)
-  obtenerCitasPorCelular(celular: number) {
-    return this.http.get<any>(`${this.apiUrl}/celular/${celular}`);
+  /**
+   * Método para obtener citas por número de celular (público)
+   * @param celular Número de celular
+   * @returns Observable con las citas del usuario
+   */
+  obtenerCitasPorCelular(celular: number): Observable<any[]> {
+    // Sanitizamos el input para prevenir inyección
+    const sanitizedCelular = String(celular).replace(/[^0-9]/g, '');
+    
+    // Guardamos el celular en localStorage para futuras consultas
+    if (sanitizedCelular.length === 10 && sanitizedCelular.startsWith('3')) {
+      this.guardarCelularEnLocalStorage(sanitizedCelular);
+    }
+    
+    return this.http.get<any[]>(`${this.apiUrl}/celular/${sanitizedCelular}`);
+  }
+  
+  /**
+   * Guarda de forma segura el celular en localStorage
+   * @param celular Número de celular a guardar
+   */
+  private guardarCelularEnLocalStorage(celular: string): void {
+    try {
+      localStorage.setItem('ultimoCelular', celular);
+    } catch (error) {
+      console.error('Error al guardar en localStorage:', error);
+    }
+  }
+  
+  /**
+   * Obtiene el último celular consultado del localStorage
+   * @returns Número de celular o null si no existe
+   */
+  public obtenerUltimoCelular(): string | null {
+    try {
+      return localStorage.getItem('ultimoCelular');
+    } catch (error) {
+      console.error('Error al leer de localStorage:', error);
+      return null;
+    }
   }
 
   getSelectDay(day: string | number) {

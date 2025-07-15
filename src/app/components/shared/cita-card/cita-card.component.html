@@ -1,0 +1,51 @@
+<div class="border border-gray-200 rounded-lg p-4 bg-white hover:shadow-md transition-shadow">
+  <div class="flex justify-between items-start mb-3">
+    <div>
+      <h4 class="font-semibold text-gray-900">{{ formatearFecha(cita.fecha) }}</h4>
+      <p class="text-sm text-gray-600">{{ cita.hora }}</p>
+    </div>
+    <span [class]="getEstadoColor() + ' status-badge'">
+      {{ cita.estado }}
+    </span>
+  </div>
+
+  <div class="mb-3">
+    <p class="text-sm font-medium text-gray-700">Servicios:</p>
+    <p class="text-sm text-gray-600">{{ getServicioNombres() }}</p>
+  </div>
+
+  <div *ngIf="!isAdmin" class="text-sm text-gray-600 mb-3">
+    <p>Celular: {{ cita.celular }}</p>
+  </div>
+
+  <!-- Acciones para cliente -->
+  <div *ngIf="showActions && !isAdmin" class="flex space-x-2">
+    <button
+      *ngIf="canEdit()"
+      (click)="onEdit()"
+      class="text-sm text-blue-600 hover:text-blue-700 font-medium"
+    >
+      Editar
+    </button>
+    <button
+      *ngIf="canCancel()"
+      (click)="onCancel()"
+      class="text-sm text-red-600 hover:text-red-700 font-medium"
+    >
+      Cancelar
+    </button>
+  </div>
+
+  <!-- Acciones para admin -->
+  <div *ngIf="showActions && isAdmin" class="flex flex-wrap gap-2 mt-3">
+    <select
+      (change)="onUpdateStatus($event)"
+      class="text-sm border border-gray-300 rounded px-2 py-1"
+      [value]="cita.estado"
+    >
+      <option *ngFor="let estado of getEstadosDisponibles()" [value]="estado">
+        {{ estado }}
+      </option>
+    </select>
+  </div>
+</div>

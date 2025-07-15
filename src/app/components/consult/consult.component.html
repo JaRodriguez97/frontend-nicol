@@ -8,12 +8,16 @@
     </div>
 
     <nav class="consulta__navegacion">
-      <button class="consulta__boton btn primary">
+      <a
+        href="https://wa.me/573003762773"
+        target="_blank"
+        class="consulta__boton btn primary"
+      >
         Chatear <fa-icon [icon]="faComments"></fa-icon>
-      </button>
-      <button class="consulta__boton btn secondary">
+      </a>
+      <a [routerLink]="['/cliente']" class="consulta__boton btn secondary">
         Agendar <fa-icon [icon]="faCalendarDays"></fa-icon>
-      </button>
+      </a>
     </nav>
   </section>
 </section>

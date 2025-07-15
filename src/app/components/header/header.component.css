@@ -74,7 +74,9 @@
 .logo {
   display: flex;
   height: 50px;
-  width: auto;
+  width: 100%;
+  justify-content: center;
+  cursor: pointer;
 }
 
 .logo img {
@@ -129,6 +131,17 @@
   .menu-btn {
     width: 100% !important;
   }
+
+  .menu-btn-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .user-info {
+    order: -1; /* Mostrar información del usuario antes del botón */
+  }
 }
 
 .nav a {
@@ -142,7 +155,7 @@
 }
 
 .menu-btn-container {
-  width: 100%;
+  width: 90%;
   display: flex;
 }
 
@@ -158,4 +171,61 @@
 
 .menu-btn:hover {
   opacity: 0.8;
+}
+
+/* ===== User Info Styles ===== */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: 16px;
+  padding: 8px 12px;
+  background-color: #f8fafc;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.celular-display {
+  font-size: 14px;
+  font-weight: 500;
+  color: #374151;
+}
+
+.clear-btn {
+  background: none;
+  border: none;
+  color: #6b7280;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.clear-btn:hover {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+@media (max-width: 770px) {
+  .user-info {
+    margin-right: 0;
+    margin-bottom: 16px;
+    justify-content: center;
+  }
+
+  .celular-display {
+    font-size: 16px;
+  }
+
+  .clear-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 18px;
+  }
 }

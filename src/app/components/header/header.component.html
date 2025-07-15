@@ -13,12 +13,27 @@
 <!-- Header -->
 <header class="header" [class.open]="isMenuOpen">
   <div class="container header-container">
-    <nav class="nav" style="justify-content: left">
-      <a href="#coquette" (click)="toggleMenu()">Coquette</a>
-      <a href="#servicios" (click)="toggleMenu()">Servicios</a>
-      <a href="#consulta" (click)="toggleMenu()">Contáctanos</a>
+    <!-- Navegación para Landing Page -->
+    <nav *ngIf="isLandingPage" class="nav" style="justify-content: left">
+      <a href="#coquette" (click)="closeMenu()">Coquette</a>
+      <a href="#servicios" (click)="closeMenu()">Servicios</a>
+      <a href="#consulta" (click)="closeMenu()">Contáctanos</a>
     </nav>
-    <a href="#" class="logo" style="justify-content: center; width: 80px">
+
+    <!-- Navegación para otras páginas -->
+    <nav *ngIf="!isLandingPage" class="nav" style="justify-content: left">
+      <a (click)="navigateToCliente()" style="cursor: pointer">Agendar Cita</a>
+      <a
+        *ngIf="hasCelular"
+        (click)="navigateToMisCitas()"
+        style="cursor: pointer"
+        >Mis Citas</a
+      >
+      <a (click)="navigateToAdmin()" style="cursor: pointer">Admin</a>
+    </nav>
+
+    <!-- Logo -->
+    <a (click)="navigateHome()" class="logo">
       <img
         src="../../../assets/img/logoNicolNails.webp"
         width="50"
@@ -27,8 +42,27 @@
         loading="lazy"
       />
     </a>
+
+    <!-- Contenedor de botones derecho -->
     <div class="menu-btn-container" style="justify-content: right">
-      <button class="menu-btn">Agendar</button>
+      <!-- Para Landing Page: Solo botón Agendar -->
+      <div *ngIf="isLandingPage">
+        <button class="menu-btn" (click)="navigateToCliente()">Agendar</button>
+      </div>
+
+      <!-- Para otras páginas: Información del cliente -->
+      <div *ngIf="!isLandingPage">
+        <div *ngIf="hasCelular && !isAuthenticated" class="user-info">
+          <span class="celular-display">{{ celular }}</span>
+          <button
+            (click)="clearCelular()"
+            class="clear-btn"
+            title="Cambiar número"
+          >
+            ×
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </header>

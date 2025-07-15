@@ -1,0 +1,125 @@
+<app-header></app-header>
+<div class="min-h-screen bg-gradient-to-br from-primary-50 to-primary-100 py-8">
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Header -->
+    <div class="text-center mb-8 animate-fade-in">
+      <h1 class="text-3xl font-bold text-gray-900 mb-2">Mis Citas</h1>
+      <p class="text-gray-600">Gestiona todas tus citas en un solo lugar</p>
+      <div class="mt-4">
+        <span class="text-sm text-gray-600">Celular: </span>
+        <span class="font-medium text-primary-600">{{ formatearCelular(celular!) }}</span>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card mb-8 animate-slide-up">
+      <div class="flex flex-wrap gap-2 justify-center">
+        <button
+          (click)="setFiltro('todas')"
+          [class]="filtroActual === 'todas' ? 'btn-primary' : 'btn-secondary'"
+          class="text-sm"
+        >
+          Todas ({{ getContadorPorFiltro('todas') }})
+        </button>
+        <button
+          (click)="setFiltro('proximas')"
+          [class]="filtroActual === 'proximas' ? 'btn-primary' : 'btn-secondary'"
+          class="text-sm"
+        >
+          Próximas ({{ getContadorPorFiltro('proximas') }})
+        </button>
+        <button
+          (click)="setFiltro('completadas')"
+          [class]="filtroActual === 'completadas' ? 'btn-primary' : 'btn-secondary'"
+          class="text-sm"
+        >
+          Completadas ({{ getContadorPorFiltro('completadas') }})
+        </button>
+        <button
+          (click)="setFiltro('canceladas')"
+          [class]="filtroActual === 'canceladas' ? 'btn-primary' : 'btn-secondary'"
+          class="text-sm"
+        >
+          Canceladas ({{ getContadorPorFiltro('canceladas') }})
+        </button>
+      </div>
+    </div>
+
+    <!-- Lista de citas -->
+    <div class="space-y-4 animate-slide-up" style="animation-delay: 0.1s">
+      <div *ngIf="isLoading" class="text-center py-8">
+        <app-loading-spinner message="Cargando citas..."></app-loading-spinner>
+      </div>
+
+      <div *ngIf="!isLoading && citasFiltradas.length === 0" class="text-center py-12">
+        <div class="w-20 h-20 bg-gray-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+          <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3a1 1 0 011-1h6a1 1 0 011 1v4h3a1 1 0 011 1v9a2 2 0 01-2 2H5a2 2 0 01-2-2V8a1 1 0 011-1h3z"/>
+          </svg>
+        </div>
+        <h3 class="text-lg font-medium text-gray-900 mb-2">
+          No tienes citas {{ filtroActual === 'todas' ? '' : filtroActual }}
+        </h3>
+        <p class="text-gray-600 mb-6">
+          {{ filtroActual === 'todas' ? 'Agenda tu primera cita para comenzar' : 'Cambia el filtro para ver otras citas' }}
+        </p>
+        <button
+          *ngIf="filtroActual === 'todas' || filtroActual === 'proximas'"
+          (click)="navegarACrearCita()"
+          class="btn-primary"
+        >
+          Agendar Nueva Cita
+        </button>
+      </div>
+
+      <div *ngIf="!isLoading && citasFiltradas.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          *ngFor="let cita of citasFiltradas; let i = index"
+          class="animate-slide-up"
+          [style.animation-delay]="i * 0.1 + 's'"
+        >
+          <app-cita-card
+            [cita]="cita"
+            [showActions]="true"
+            [isAdmin]="false"
+            (editCita)="onEditCita($event)"
+            (cancelCita)="onCancelCita($event)"
+          ></app-cita-card>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones de acción -->
+    <div class="flex justify-between mt-8 animate-slide-up" style="animation-delay: 0.2s">
+      <button
+        (click)="volver()"
+        class="btn-secondary"
+      >
+        Volver al Dashboard
+      </button>
+      
+      <button
+        (click)="navegarACrearCita()"
+        class="btn-primary"
+      >
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        </svg>
+        Nueva Cita
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Dialog -->
+<app-confirm-dialog
+  [isOpen]="showConfirmDialog"
+  title="Cancelar Cita"
+  message="¿Estás seguro de que quieres cancelar esta cita? Esta acción no se puede deshacer."
+  confirmText="Cancelar Cita"
+  cancelText="Mantener Cita"
+  confirmClass="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+  (confirm)="confirmCancelCita()"
+  (cancel)="closeConfirmDialog()"
+></app-confirm-dialog>
